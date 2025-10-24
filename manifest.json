@@ -1,21 +1,8 @@
 {
   "name": "Tessa",
-  "id": "1563610228145473697",
+  "id": "tessa-plugin",
   "api": "1.0.0",
-  "main": "code.js",
-  "capabilities": [],
-  "enableProposedApi": false,
-  "documentAccess": "dynamic-page",
-  "editorType": [
-    "figma",
-    "figjam",
-    "slides",
-    "buzz"
-  ],
+  "main": "dist/code.js",
   "ui": "ui.html",
-  "networkAccess": {
-    "allowedDomains": [
-      "none"
-    ]
-  }
+  "editorType": ["figma"]
 }

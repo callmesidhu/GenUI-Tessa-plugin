@@ -2,10 +2,12 @@
   "compilerOptions": {
     "target": "es6",
     "lib": ["es6"],
+    "module": "commonjs",
+    "outDir": "./dist",
     "strict": true,
-    "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules/@figma"
-    ]
-  }
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"]
+  },
+  "include": ["./code.ts"]
 }
