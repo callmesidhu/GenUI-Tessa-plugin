@@ -2,396 +2,113 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Tessa</title>
+  <title>Tessa - Figma Analyzer</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: Inter, sans-serif;
       margin: 0;
-      padding: 24px;
-      background: linear-gradient(135deg, #0f1419 0%, #1a1f26 100%);
-      color: #e4e4e7;
-      min-height: 100vh;
+      padding: 16px;
+      background: #f9fafb;
+      color: #111;
     }
-    h2 {
-      margin: 0 0 24px 0;
-      font-size: 24px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.02em;
-    }
-    .button-group {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
+    h2 { margin-bottom: 8px; }
     button {
-      flex: 1;
-      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-      color: #0f1419;
+      background: #007aff;
+      color: white;
       border: none;
-      padding: 14px 20px;
-      border-radius: 12px;
+      padding: 10px 16px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.25);
-      position: relative;
-      overflow: hidden;
     }
-    button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    button:hover::before {
-      opacity: 1;
-    }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(74, 222, 128, 0.35);
-    }
-    button:active {
-      transform: translateY(0);
-    }
-    button span {
-      position: relative;
-      z-index: 1;
-    }
-    button.secondary {
-      background: rgba(74, 222, 128, 0.1);
-      color: #86efac;
-      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.1);
-      border: 1px solid rgba(74, 222, 128, 0.2);
-    }
-    button.secondary::before {
-      background: rgba(74, 222, 128, 0.15);
-    }
-    button.secondary:hover {
-      border-color: rgba(74, 222, 128, 0.4);
-      box-shadow: 0 8px 24px rgba(74, 222, 128, 0.2);
-    }
-    .status {
-      padding: 16px 20px;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      font-size: 14px;
-      display: none;
-      border-left: 4px solid;
-      backdrop-filter: blur(10px);
-    }
-    .status.info {
-      background: rgba(74, 222, 128, 0.1);
-      color: #86efac;
-      border-color: #4ade80;
-      display: block;
-    }
-    .status.error {
-      background: rgba(239, 68, 68, 0.1);
-      color: #fca5a5;
-      border-color: #ef4444;
-      display: block;
-    }
-    .summary {
-      background: rgba(26, 31, 38, 0.6);
-      border: 1px solid rgba(74, 222, 128, 0.15);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 24px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    .summary h3 {
-      margin: 0 0 16px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #86efac;
-      letter-spacing: -0.01em;
-    }
-    .stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .stat {
-      background: rgba(15, 20, 25, 0.5);
-      padding: 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(74, 222, 128, 0.1);
-      transition: all 0.3s ease;
-    }
-    .stat:hover {
-      border-color: rgba(74, 222, 128, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(74, 222, 128, 0.1);
-    }
-    .stat-label {
-      font-size: 11px;
-      color: #71717a;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 600;
-    }
-    .stat-value {
-      font-size: 28px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-top: 8px;
-      letter-spacing: -0.02em;
-    }
-    .analysis-result {
-      background: rgba(26, 31, 38, 0.6);
-      border: 1px solid rgba(74, 222, 128, 0.15);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-      max-height: 400px;
-      overflow-y: auto;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-    .analysis-result::-webkit-scrollbar {
-      width: 8px;
-    }
-    .analysis-result::-webkit-scrollbar-track {
-      background: rgba(74, 222, 128, 0.05);
-      border-radius: 4px;
-    }
-    .analysis-result::-webkit-scrollbar-thumb {
-      background: rgba(74, 222, 128, 0.3);
-      border-radius: 4px;
-    }
-    .analysis-result::-webkit-scrollbar-thumb:hover {
-      background: rgba(74, 222, 128, 0.5);
-    }
-    .analysis-result h3 {
-      margin: 0 0 12px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #86efac;
-      letter-spacing: -0.01em;
-    }
-    .analysis-result p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #d4d4d8;
+    button:hover { background: #005fcc; }
+    .section { margin-top: 20px; }
+    #output {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f0f0f0;
+      border-radius: 6px;
+      font-size: 13px;
       white-space: pre-wrap;
     }
-    .loading {
-      text-align: center;
-      padding: 40px 20px;
-    }
-    .spinner {
-      border: 3px solid rgba(74, 222, 128, 0.1);
-      border-top: 3px solid #4ade80;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .loading p {
-      margin-top: 16px;
-      color: #86efac;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <h2>Tessa Design Analyzer</h2>
-  
-  <div class="button-group">
-    <button id="analyzeFileBtn"><span>Analyze Entire File</span></button>
-    <button id="analyzeSelectionBtn" class="secondary"><span>Analyze Selection</span></button>
-  </div>
+  <h2>Tessa – Figma File Analyzer</h2>
+  <button id="analyzeSelectionBtn">Analyze Figma File</button>
 
-  <div id="status" class="status"></div>
-
-  <div id="summarySection" class="summary hidden">
-    <h3>File Summary</h3>
-    <div class="stat-grid">
-      <div class="stat">
-        <div class="stat-label">Pages</div>
-        <div class="stat-value" id="statPages">-</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Frames</div>
-        <div class="stat-value" id="statFrames">-</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Components</div>
-        <div class="stat-value" id="statComponents">-</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Total Layers</div>
-        <div class="stat-value" id="statLayers">-</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="loadingSection" class="loading hidden">
-    <div class="spinner"></div>
-    <p>Analyzing with AI...</p>
-  </div>
-
-  <div id="analysisSection" class="analysis-result hidden">
-    <h3>AI Analysis</h3>
-    <p id="analysisText"></p>
-  </div>
+  <div id="status" class="section hidden"></div>
+  <div id="summary" class="section hidden"></div>
+  <div id="output" class="section hidden"></div>
 
   <script type="module">
     import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
-    const API_KEY = "YOUR_GEMINI_API_KEY_HERE";
-    const genAI = new GoogleGenerativeAI(API_KEY);
+    const GEMINI_API_KEY = "AIzaSyAW311hX7VGzc7yvQzYhQSza2CiP7fGZKw"; // replace dynamically
+    let genAI;
+
+    function initGemini() {
+      if (!GEMINI_API_KEY || GEMINI_API_KEY === "{{GEMINI_API_KEY}}") {
+        showStatus("Missing Gemini API key in .env", true);
+        return false;
+      }
+      genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+      return true;
+    }
 
     const elements = {
-      analyzeFileBtn: document.getElementById("analyzeFileBtn"),
       analyzeSelectionBtn: document.getElementById("analyzeSelectionBtn"),
       status: document.getElementById("status"),
-      summarySection: document.getElementById("summarySection"),
-      loadingSection: document.getElementById("loadingSection"),
-      analysisSection: document.getElementById("analysisSection"),
-      analysisText: document.getElementById("analysisText"),
-      statPages: document.getElementById("statPages"),
-      statFrames: document.getElementById("statFrames"),
-      statComponents: document.getElementById("statComponents"),
-      statLayers: document.getElementById("statLayers")
-    };
-
-    function showStatus(message, type = "info") {
-      elements.status.textContent = message;
-      elements.status.className = `status ${type}`;
-    }
-
-    function hideStatus() {
-      elements.status.className = "status";
-    }
-
-    function showLoading() {
-      elements.loadingSection.classList.remove("hidden");
-      elements.analysisSection.classList.add("hidden");
-    }
-
-    function hideLoading() {
-      elements.loadingSection.classList.add("hidden");
-    }
-
-    elements.analyzeFileBtn.onclick = () => {
-      hideStatus();
-      elements.summarySection.classList.add("hidden");
-      elements.analysisSection.classList.add("hidden");
-      parent.postMessage({ pluginMessage: { type: "analyze-file" } }, "*");
+      summary: document.getElementById("summary"),
+      output: document.getElementById("output")
     };
 
     elements.analyzeSelectionBtn.onclick = () => {
-      hideStatus();
-      elements.summarySection.classList.add("hidden");
-      elements.analysisSection.classList.add("hidden");
-      parent.postMessage({ pluginMessage: { type: "analyze-selection" } }, "*");
+      if (!initGemini()) return;
+      showStatus("Analyzing entire file...", false);
+      parent.postMessage({ pluginMessage: { type: "analyze-file" } }, "*");
     };
-
-    async function analyzeWithAI(data, isFileAnalysis = true) {
-      showLoading();
-
-      const prompt = isFileAnalysis 
-        ? `You are a UX/UI design expert. Analyze this Figma file structure and provide insights:
-        
-File: ${data.fileName}
-Summary: ${data.summary.totalPages} pages, ${data.summary.totalFrames} frames, ${data.summary.totalComponents} components, ${data.summary.totalLayers} total layers
-
-Pages and Structure:
-${JSON.stringify(data.pages, null, 2)}
-
-Components: ${data.components.length > 0 ? data.components.map(c => c.name).join(', ') : 'None'}
-Color Styles: ${data.styles.colors.length > 0 ? data.styles.colors.map(s => s.name).join(', ') : 'None'}
-Text Styles: ${data.styles.textStyles.length > 0 ? data.styles.textStyles.map(s => s.name).join(', ') : 'None'}
-
-Provide:
-1. Design system observations
-2. Organizational insights
-3. Potential improvements
-4. Consistency analysis`
-        : `You are a UX/UI design expert. Analyze these selected Figma layers:
-
-${JSON.stringify(data, null, 2)}
-
-Provide:
-1. Design quality assessment
-2. Accessibility considerations
-3. Best practice recommendations
-4. Layout and hierarchy feedback`;
-
-      try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        
-        hideLoading();
-        elements.analysisSection.classList.remove("hidden");
-        elements.analysisText.textContent = text;
-      } catch (err) {
-        hideLoading();
-        showStatus("Error: " + err.message, "error");
-      }
-    }
 
     onmessage = async (event) => {
       const msg = event.data.pluginMessage;
-
-      if (msg.type === "error") {
-        showStatus(msg.message, "error");
-        return;
-      }
-
-      if (msg.type === "analyzing") {
-        showStatus(msg.message, "info");
-        return;
-      }
+      if (!msg) return;
 
       if (msg.type === "fileData") {
-        hideStatus();
-        
-        elements.statPages.textContent = msg.data.summary.totalPages;
-        elements.statFrames.textContent = msg.data.summary.totalFrames;
-        elements.statComponents.textContent = msg.data.summary.totalComponents;
-        elements.statLayers.textContent = msg.data.summary.totalLayers;
-        elements.summarySection.classList.remove("hidden");
-
-        await analyzeWithAI(msg.data, true);
-      }
-
-      if (msg.type === "selectionData") {
-        hideStatus();
-        await analyzeWithAI(msg.data, false);
+        showStatus("Generating AI analysis...", false);
+        const data = msg.data;
+        await analyzeWithGemini(data);
+      } else if (msg.type === "error") {
+        showStatus("Error: " + msg.message, true);
       }
     };
+
+    function showStatus(text, isError) {
+      elements.status.textContent = text;
+      elements.status.classList.remove("hidden");
+      elements.status.style.color = isError ? "red" : "#333";
+    }
+
+    async function analyzeWithGemini(data) {
+      try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const prompt = `
+You are analyzing a Figma file structure. Summarize its structure, hierarchy, and UI/UX design patterns.
+Suggest improvements based on the data below:
+
+${JSON.stringify(data, null, 2)}
+        `;
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+
+        elements.summary.classList.remove("hidden");
+        elements.output.classList.remove("hidden");
+        elements.output.textContent = text;
+        showStatus("✅ Analysis complete", false);
+      } catch (err) {
+        showStatus("Gemini API error: " + err.message, true);
+      }
+    }
   </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
   "description": "Figma plugin that analyzes design using Gemini API",
   "main": "code.js",
   "scripts": {
+    "prebuild": "node scripts/inject-env.js",
     "build": "tsc",
     "watch": "tsc --watch"
   },
